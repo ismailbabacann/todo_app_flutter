@@ -45,6 +45,12 @@ class _HomeScreenState extends State<HomeScreen> {
     Task(type: Tasktype.calendar, title: "Faturayı yatır", description: "Elektrik faturasını yatır", isCompleted: false),
     Task(type: Tasktype.contest, title: "Doğum günü için aramayı unutma", description: "Beyza'nın doğum gününü aramayı unutma", isCompleted: false),
   ];
+
+  void addNewTask(Task newTask) {
+    setState(() {
+      todo.add(newTask);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     double deviceHeight = MediaQuery.of(context).size.height;
@@ -134,8 +140,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const AddNewTask(),
+                   MaterialPageRoute(
+                    builder: (context) => AddNewTask(
+                      addNewTask: (newtask) => addNewTask(newtask),
+                    ),
                   ),
                 );
               },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_uygulamasi/constant/tasktype.dart';
 import 'package:todo_uygulamasi/model/task.dart';
 import 'package:todo_uygulamasi/screens/AddNewTask.dart';
+import 'package:todo_uygulamasi/service/todo_service.dart';
 import '../todoitem.dart';
 
 void main() {
@@ -53,6 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
   @override
   Widget build(BuildContext context) {
+    TodoService todoService = TodoService();
+    todoService.getTodos();
     double deviceHeight = MediaQuery.of(context).size.height;
     double deviceWidth = MediaQuery.of(context).size.width;
     return SafeArea(

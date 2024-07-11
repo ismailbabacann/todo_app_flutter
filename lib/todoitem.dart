@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:todo_uygulamasi/constant/tasktype.dart';
 import 'package:todo_uygulamasi/model/task.dart';
+import 'package:todo_uygulamasi/model/todo.dart';
 
 class TodoItem extends StatefulWidget {
-  final Task task;
+  final Todo task;
 
   TodoItem({super.key, required this.task});
 
@@ -17,31 +18,39 @@ class _TodoItemState extends State<TodoItem> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: widget.task.isCompleted == true ? Colors.grey : Colors.white,
+      color: widget.task.completed! == true ? Colors.grey : Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            /* TODO FİREBASE İSLEMLERİNDE DÜZELTİLECEK
             widget.task.type == Tasktype.note
                 ? Image.asset("lib/assets/Category.png")
                 : widget.task.type == Tasktype.contest
                     ? Image.asset("lib/assets/Category (2).png")
                     : Image.asset("lib/assets/Category (1).png"),
+                    */
             Expanded(
               child: Column(
                 children: [
                   Text(
-                    widget.task.title,
+                    widget.task.todo!,
                     style: TextStyle(
-                        decoration: widget.task.isCompleted ? TextDecoration.lineThrough : TextDecoration.none,
+                        decoration: widget.task.completed!
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
                         fontWeight: FontWeight.bold,
                         fontSize: 21),
                   ),
                   Text(
-                    widget.task.description,
-                    style: TextStyle(decoration: widget.task.isCompleted ? TextDecoration.lineThrough : TextDecoration.none,),
+                    "User: ${widget.task.userId}",
+                    style: TextStyle(
+                      decoration: widget.task.completed!
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none,
+                    ),
                   ),
                 ],
               ),
@@ -51,7 +60,7 @@ class _TodoItemState extends State<TodoItem> {
               onChanged: (val) => {
                 setState(
                   () {
-                    widget.task.isCompleted = !widget.task.isCompleted;
+                    widget.task.completed = !widget.task.completed!;
                     isChecked = val!;
                   },
                 ),

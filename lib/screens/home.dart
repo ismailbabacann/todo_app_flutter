@@ -37,14 +37,34 @@ class _HomeScreenState extends State<HomeScreen> {
   List<String> completed = ["Spor yap", "Matematik Çalış"];
   */
 
-  List<Task> todo =[
-    Task(type: Tasktype.note, title: "Ödevini Yap", description: "Fizik testlerini çöz", isCompleted: false),
-    Task(type: Tasktype.calendar, title: "Faturayı yatır", description: "Elektrik faturasını yatır", isCompleted: false),
-    Task(type: Tasktype.contest, title: "Doğum günü için aramayı unutma", description: "Beyza'nın doğum gününü aramayı unutma", isCompleted: false),
+  List<Task> todo = [
+    Task(
+        type: Tasktype.note,
+        title: "Ödevini Yap",
+        description: "Fizik testlerini çöz",
+        isCompleted: false),
+    Task(
+        type: Tasktype.calendar,
+        title: "Faturayı yatır",
+        description: "Elektrik faturasını yatır",
+        isCompleted: false),
+    Task(
+        type: Tasktype.contest,
+        title: "Doğum günü için aramayı unutma",
+        description: "Beyza'nın doğum gününü aramayı unutma",
+        isCompleted: false),
   ];
-  List<Task> completed =[
-    Task(type: Tasktype.calendar, title: "Faturayı yatır", description: "Elektrik faturasını yatır", isCompleted: false),
-    Task(type: Tasktype.contest, title: "Doğum günü için aramayı unutma", description: "Beyza'nın doğum gününü aramayı unutma", isCompleted: false),
+  List<Task> completed = [
+    Task(
+        type: Tasktype.calendar,
+        title: "Faturayı yatır",
+        description: "Elektrik faturasını yatır",
+        isCompleted: false),
+    Task(
+        type: Tasktype.contest,
+        title: "Doğum günü için aramayı unutma",
+        description: "Beyza'nın doğum gününü aramayı unutma",
+        isCompleted: false),
   ];
 
   void addNewTask(Task newTask) {
@@ -52,14 +72,14 @@ class _HomeScreenState extends State<HomeScreen> {
       todo.add(newTask);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     TodoService todoService = TodoService();
-    todoService.getTodos();
     double deviceHeight = MediaQuery.of(context).size.height;
     double deviceWidth = MediaQuery.of(context).size.width;
     return SafeArea(
-        child: Scaffold(
+      child: Scaffold(
         body: Column(
           children: [
             //Header
@@ -102,12 +122,24 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                 child: SingleChildScrollView(
-                  child: ListView.builder(
-                    primary: false,
-                    shrinkWrap: true,
-                    itemCount: todo.length,
-                    itemBuilder: (context, index) {
-                      return TodoItem(task: todo[index]);
+                  child: FutureBuilder(
+                    future: todoService.getTodos(),
+                    builder: (context, snapshot) {
+                      print(snapshot);
+                      if(snapshot.data == null){
+                        return const CircularProgressIndicator();
+                      }else{
+                        return ListView.builder(
+                          primary: false,
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            return TodoItem(task: snapshot.data![index]
+                            );
+                          },
+                        );
+                      }
+
                     },
                   ),
                 ),
@@ -125,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             //Bottom Column
-            Expanded(
+            /*Expanded(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                 child: SingleChildScrollView(
@@ -140,10 +172,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
+*/
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(
-                   MaterialPageRoute(
+                  MaterialPageRoute(
                     builder: (context) => AddNewTask(
                       addNewTask: (newtask) => addNewTask(newtask),
                     ),

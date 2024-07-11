@@ -17,6 +17,7 @@ class _TodoItemState extends State<TodoItem> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: widget.task.isCompleted == true ? Colors.grey : Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -33,10 +34,15 @@ class _TodoItemState extends State<TodoItem> {
                 children: [
                   Text(
                     widget.task.title,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 21),
+                    style: TextStyle(
+                        decoration: widget.task.isCompleted ? TextDecoration.lineThrough : TextDecoration.none,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 21),
                   ),
-                  Text(widget.task.description),
+                  Text(
+                    widget.task.description,
+                    style: TextStyle(decoration: widget.task.isCompleted ? TextDecoration.lineThrough : TextDecoration.none,),
+                  ),
                 ],
               ),
             ),
